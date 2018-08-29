@@ -1,0 +1,132 @@
+﻿@model Railwaytrackingandtimings.Models.TrainStationDetailsmodel
+
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "TrainSchedule";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+<h2>TrainSchedule</h2>
+
+<div class="form-horizontal">
+    <div class="col-xs-12 col-sm-4">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @*@Model= new Railwaytrackingandtimings.TemptblStationTrainDetail();*@
+
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemptblStationTrainDetail.TrainId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.TemptblStationTrainDetail.TrainId, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.TrainId } })
+                    @Html.ValidationMessageFor(model => model.TemptblStationTrainDetail.TrainId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemptblStationTrainDetail.StationCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => model.TemptblStationTrainDetail.StationCode, new SelectList(ViewBag.stations, "StationCode", "StationName"), htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TemptblStationTrainDetail.StationCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemptblStationTrainDetail.SchduleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.TemptblStationTrainDetail.SchduleDate, new { htmlAttributes = new { @class = "datetimepicker form-control", placeholder = "YYYY-MM-DD" } })
+                    @Html.ValidationMessageFor(model => model.TemptblStationTrainDetail.SchduleDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemptblStationTrainDetail.ArrivalTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.TemptblStationTrainDetail.ArrivalTime, new { htmlAttributes = new { @class = "form-control", placeholder = "HH:MM" } })
+                    @Html.ValidationMessageFor(model => model.TemptblStationTrainDetail.ArrivalTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemptblStationTrainDetail.DepatureTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.TemptblStationTrainDetail.DepatureTime, new { htmlAttributes = new { @class = "form-control", placeholder = "HH:MM" } })
+                    @Html.ValidationMessageFor(model => model.TemptblStationTrainDetail.DepatureTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.StationName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StationName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StationName, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <div class="col-xs-12 col-sm-8" style="box-shadow: 0px 0px 5px 2px; background-color: azure;">
+        @using (Html.BeginForm("SavetrainStation", "Admin"))
+        {
+            <div>
+                <h4 style="color:green">Stations Details</h4>
+
+                @Html.Grid(Model.TemptblStationTrainDetaillist).Columns(columns =>
+       {
+           columns.Add(c => c.StationCode).Titled("Station Code").Filterable(false);
+           columns.Add(c => c.StationName).Titled("Station Name").Filterable(false);
+           columns.Add(c => c.ArrivalTime).Titled("Arrival Time").Filterable(false);
+           columns.Add(c => c.DepatureTime).Titled("Depature Time").Filterable(false);
+           columns.Add(c => c.SchduleDate).Titled("Schdule Date").Filterable(false);
+
+
+       }).WithPaging(10).Sortable(true)
+            </div>
+            <br />
+            <div class="form-group">
+                @Html.Label("Delay", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.TextBox("Delayeditor", "", new { htmlAttributes = new { @class = "form-control", placeholder = "MM" } })
+                    @Html.Hidden("hdntrianid", (object)ViewBag.TrainId)
+                    
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+        }
+    </div>
+
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to Train List", "Index")
+</div>
+@*@section scripts{
+      <script type="text/javascript">
+          $('.datepicker').datepicker({
+              format: 'dd/mm/yyyy', //choose the date format you prefer
+             });
+    </script>
+
+        }*@

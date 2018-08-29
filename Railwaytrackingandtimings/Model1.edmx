@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RailwaytrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="StationTrainDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TrainId" Type="int" Nullable="false" />
+          <Property Name="StationCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SchduleDate" Type="date" Nullable="false" />
+          <Property Name="ArrivalTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="DepatureTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="1" />
+          <Property Name="Delay" Type="int" />
+          <Property Name="StationName" Type="varchar" MaxLength="20" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblStationDetails">
+          <Key>
+            <PropertyRef Name="StationCode" />
+          </Key>
+          <Property Name="StationCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="StationName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdated" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTrainDetails">
+          <Key>
+            <PropertyRef Name="TrainId" />
+          </Key>
+          <Property Name="TrainId" Type="int" Nullable="false" />
+          <Property Name="TrainName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TrainType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FromStationcode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ToStationCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUsers">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="10" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblUserStation">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="StationCode" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StationCode" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TemptblStationTrainDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TrainId" Type="int" Nullable="false" />
+          <Property Name="StationCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SchduleDate" Type="date" Nullable="false" />
+          <Property Name="ArrivalTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="DepatureTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="1" />
+          <Property Name="StationName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblTrainDetails_tblStationDetails">
+          <End Role="tblStationDetails" Type="Self.tblStationDetails" Multiplicity="1" />
+          <End Role="tblTrainDetails" Type="Self.tblTrainDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStationDetails">
+              <PropertyRef Name="StationCode" />
+            </Principal>
+            <Dependent Role="tblTrainDetails">
+              <PropertyRef Name="FromStationcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainDetails_tblStationDetails1">
+          <End Role="tblStationDetails" Type="Self.tblStationDetails" Multiplicity="1" />
+          <End Role="tblTrainDetails" Type="Self.tblTrainDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStationDetails">
+              <PropertyRef Name="StationCode" />
+            </Principal>
+            <Dependent Role="tblTrainDetails">
+              <PropertyRef Name="ToStationCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUsers_tblRole">
+          <End Role="tblRole" Type="Self.tblRole" Multiplicity="1" />
+          <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUsers">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RailwaytrackingModelStoreContainer">
+          <EntitySet Name="StationTrainDetails" EntityType="Self.StationTrainDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStationDetails" EntityType="Self.tblStationDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTrainDetails" EntityType="Self.tblTrainDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TemptblStationTrainDetails" EntityType="Self.TemptblStationTrainDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserStation" EntityType="Self.tblUserStation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblUserStation].[UserId] AS [UserId], 
+    [tblUserStation].[StationCode] AS [StationCode]
+    FROM [dbo].[tblUserStation] AS [tblUserStation]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tblTrainDetails_tblStationDetails" Association="Self.FK_tblTrainDetails_tblStationDetails">
+            <End Role="tblStationDetails" EntitySet="tblStationDetails" />
+            <End Role="tblTrainDetails" EntitySet="tblTrainDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainDetails_tblStationDetails1" Association="Self.FK_tblTrainDetails_tblStationDetails1">
+            <End Role="tblStationDetails" EntitySet="tblStationDetails" />
+            <End Role="tblTrainDetails" EntitySet="tblTrainDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUsers_tblRole" Association="Self.FK_tblUsers_tblRole">
+            <End Role="tblRole" EntitySet="tblRole" />
+            <End Role="tblUsers" EntitySet="tblUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RailwaytrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="tblUsers" Relationship="Self.FK_tblUsers_tblRole" FromRole="tblRole" ToRole="tblUsers" />
+        </EntityType>
+        <EntityType Name="tblStationDetail">
+          <Key>
+            <PropertyRef Name="StationCode" />
+          </Key>
+          <Property Name="StationCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblTrainDetails" Relationship="Self.FK_tblTrainDetails_tblStationDetails" FromRole="tblStationDetails" ToRole="tblTrainDetails" />
+          <NavigationProperty Name="tblTrainDetails1" Relationship="Self.FK_tblTrainDetails_tblStationDetails1" FromRole="tblStationDetails" ToRole="tblTrainDetails" />
+        </EntityType>
+        <EntityType Name="tblTrainDetail">
+          <Key>
+            <PropertyRef Name="TrainId" />
+          </Key>
+          <Property Name="TrainId" Type="Int32" Nullable="false" />
+          <Property Name="TrainName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TrainType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="FromStationcode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ToStationCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblStationDetail" Relationship="Self.FK_tblTrainDetails_tblStationDetails" FromRole="tblTrainDetails" ToRole="tblStationDetails" />
+          <NavigationProperty Name="tblStationDetail1" Relationship="Self.FK_tblTrainDetails_tblStationDetails1" FromRole="tblTrainDetails" ToRole="tblStationDetails" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblRole" Relationship="Self.FK_tblUsers_tblRole" FromRole="tblUsers" ToRole="tblRole" />
+        </EntityType>
+        <Association Name="FK_tblUsers_tblRole">
+          <End Role="tblRole" Type="Self.tblRole" Multiplicity="1" />
+          <End Role="tblUsers" Type="Self.tblUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUsers">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainDetails_tblStationDetails">
+          <End Role="tblStationDetails" Type="Self.tblStationDetail" Multiplicity="1" />
+          <End Role="tblTrainDetails" Type="Self.tblTrainDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStationDetails">
+              <PropertyRef Name="StationCode" />
+            </Principal>
+            <Dependent Role="tblTrainDetails">
+              <PropertyRef Name="FromStationcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainDetails_tblStationDetails1">
+          <End Role="tblStationDetails" Type="Self.tblStationDetail" Multiplicity="1" />
+          <End Role="tblTrainDetails" Type="Self.tblTrainDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStationDetails">
+              <PropertyRef Name="StationCode" />
+            </Principal>
+            <Dependent Role="tblTrainDetails">
+              <PropertyRef Name="ToStationCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RailwaytrackingEntitieslatest" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
+          <EntitySet Name="tblStationDetails" EntityType="Self.tblStationDetail" />
+          <EntitySet Name="tblTrainDetails" EntityType="Self.tblTrainDetail" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+          <AssociationSet Name="FK_tblUsers_tblRole" Association="Self.FK_tblUsers_tblRole">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblUsers" EntitySet="tblUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainDetails_tblStationDetails" Association="Self.FK_tblTrainDetails_tblStationDetails">
+            <End Role="tblStationDetails" EntitySet="tblStationDetails" />
+            <End Role="tblTrainDetails" EntitySet="tblTrainDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainDetails_tblStationDetails1" Association="Self.FK_tblTrainDetails_tblStationDetails1">
+            <End Role="tblStationDetails" EntitySet="tblStationDetails" />
+            <End Role="tblTrainDetails" EntitySet="tblTrainDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblUserStations" EntityType="RailwaytrackingModel.tblUserStation" />
+          <EntitySet Name="StationTrainDetails" EntityType="RailwaytrackingModel.StationTrainDetail" />
+          <EntitySet Name="TemptblStationTrainDetails" EntityType="RailwaytrackingModel.TemptblStationTrainDetail" />
+        </EntityContainer>
+        <EntityType Name="tblUserStation">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="StationCode" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StationCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StationTrainDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TrainId" Type="Int32" Nullable="false" />
+          <Property Name="StationCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SchduleDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ArrivalTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="DepatureTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Delay" Type="Int32" />
+          <Property Name="StationName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="TemptblStationTrainDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TrainId" Type="Int32" Nullable="false" />
+          <Property Name="StationCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SchduleDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ArrivalTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="DepatureTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="StationName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RailwaytrackingModelStoreContainer" CdmEntityContainer="RailwaytrackingEntitieslatest">
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblRole">
+              <MappingFragment StoreEntitySet="tblRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStationDetails">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblStationDetail">
+              <MappingFragment StoreEntitySet="tblStationDetails">
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTrainDetails">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblTrainDetail">
+              <MappingFragment StoreEntitySet="tblTrainDetails">
+                <ScalarProperty Name="TrainId" ColumnName="TrainId" />
+                <ScalarProperty Name="TrainName" ColumnName="TrainName" />
+                <ScalarProperty Name="TrainType" ColumnName="TrainType" />
+                <ScalarProperty Name="FromStationcode" ColumnName="FromStationcode" />
+                <ScalarProperty Name="ToStationCode" ColumnName="ToStationCode" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUsers">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserStations">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblUserStation">
+              <MappingFragment StoreEntitySet="tblUserStation">
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StationTrainDetails">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.StationTrainDetail">
+              <MappingFragment StoreEntitySet="StationTrainDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DepatureTime" ColumnName="DepatureTime" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="SchduleDate" ColumnName="SchduleDate" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="TrainId" ColumnName="TrainId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TemptblStationTrainDetails">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.TemptblStationTrainDetail">
+              <MappingFragment StoreEntitySet="TemptblStationTrainDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DepatureTime" ColumnName="DepatureTime" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="SchduleDate" ColumnName="SchduleDate" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="TrainId" ColumnName="TrainId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

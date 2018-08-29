@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Railwaytrackingandtimings.StationTrainDetail>
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_LayoutPageLogin.cshtml";
+    Layout = "~/Views/Shared/_LayoutPageSM.cshtml";
+}
+@using GridMvc.Html
+<h3></h3>
+
+<div class="form-horizontal">    
+    <div class="col-xs-12 col-sm-1">
+
+    </div>
+    <div class="col-xs-12 col-sm-10" style="box-shadow: 0px 0px 5px 2px; background-color: azure;">
+        <span class="text-danger">@ViewBag.Error</span>
+
+        @if (Model != null)
+        {
+
+            @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(c => c.TrainId).Titled("Train No").Filterable(false);
+           columns.Add(c => c.StationName).Titled("Station Name").Filterable(false);
+           columns.Add(c => c.ArrivalTime).Titled("Arrival Time").Filterable(false);
+           columns.Add(c => c.DepatureTime).Titled("Depature Time").Filterable(false);
+           columns.Add(c => c.StationCode).Titled("Station Code").Filterable(false);
+           columns.Add()
+          .Encoded(false)
+          .Sanitized(false)
+          .SetWidth(30)
+          .RenderValueAs(o => Html.ActionLink("Update", "Trainupdate", new { id = o.Id }));
+       })
+        }
+    </div>
+    <div class="col-xs-12 col-sm-1">
+
+    </div>
+
+</div>

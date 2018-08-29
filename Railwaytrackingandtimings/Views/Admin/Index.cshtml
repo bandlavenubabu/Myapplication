@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Railwaytrackingandtimings.tblTrainDetail>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@using GridMvc.Html 
+<h3></h3>
+<div class="form-horizontal">
+    <div class="col-xs-12 col-sm-1">
+
+    </div>
+    <div  class="col-xs-12 col-sm-10" style="box-shadow: 0px 0px 5px 2px; background-color: azure;">
+        <h4 style="color:green">Trains Details</h4>
+        @Html.Grid(Model).Columns(columns =>
+   {
+       columns.Add(c => c.TrainId).Titled("Train No").Filterable(true);
+       columns.Add(c => c.TrainName).Titled("Train Name").Filterable(true);
+       columns.Add(c => c.TrainType).Titled("Train Type").Filterable(true);
+       columns.Add(c => c.FromStationcode).Titled("From Station").Filterable(true);
+       columns.Add(c => c.ToStationCode).Titled("To Station").Filterable(true);
+       columns.Add()
+       .Encoded(false)
+       .Sanitized(false)
+       .SetWidth(30)
+       .RenderValueAs(o => Html.ActionLink("Edit", "TrainSchedule", new { id = o.TrainId }));
+
+   }).WithPaging(2).Sortable(true)
+    </div>
+    <div class="col-xs-12 col-sm-1">
+
+    </div>
+    
+    </div>
