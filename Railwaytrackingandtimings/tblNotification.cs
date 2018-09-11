@@ -12,15 +12,13 @@ namespace Railwaytrackingandtimings
     using System;
     using System.Collections.Generic;
     
-    public partial class TemptblStationTrainDetail
+    public partial class tblNotification
     {
+        public string UserId { get; set; }
+        public string EmailId { get; set; }
         public int TrainId { get; set; }
-        public string StationCode { get; set; }
-        public System.DateTime SchduleDate { get; set; }
-        public System.TimeSpan ArrivalTime { get; set; }
-        public System.TimeSpan DepatureTime { get; set; }
+        public System.DateTime CreatedDate { get; set; }
         public string Status { get; set; }
-        public string StationName { get; set; }
         public int Id { get; set; }
     }
 }

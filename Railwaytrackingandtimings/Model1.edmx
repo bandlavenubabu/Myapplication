@@ -19,6 +19,37 @@
           <Property Name="StationName" Type="varchar" MaxLength="20" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblEmailNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailTo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblNotifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TrainId" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TblRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StationCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Maintance" Type="int" Nullable="false" />
+          <Property Name="Security" Type="int" Nullable="false" />
+          <Property Name="Food" Type="int" Nullable="false" />
+          <Property Name="Staff" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -56,7 +87,7 @@
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="10" />
@@ -65,15 +96,13 @@
           <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
           <Property Name="Role" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblUserStation">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="StationCode" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="UserId" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="StationCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="TemptblStationTrainDetails">
           <Key>
@@ -126,17 +155,15 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
         </Association>
         <EntityContainer Name="RailwaytrackingModelStoreContainer">
           <EntitySet Name="StationTrainDetails" EntityType="Self.StationTrainDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmailNotification" EntityType="Self.tblEmailNotification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblNotifications" EntityType="Self.tblNotifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblRating" EntityType="Self.TblRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStationDetails" EntityType="Self.tblStationDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTrainDetails" EntityType="Self.tblTrainDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserStation" EntityType="Self.tblUserStation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TemptblStationTrainDetails" EntityType="Self.TemptblStationTrainDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblUserStation" EntityType="Self.tblUserStation" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tblUserStation].[UserId] AS [UserId], 
-    [tblUserStation].[StationCode] AS [StationCode]
-    FROM [dbo].[tblUserStation] AS [tblUserStation]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_tblTrainDetails_tblStationDetails" Association="Self.FK_tblTrainDetails_tblStationDetails">
             <End Role="tblStationDetails" EntitySet="tblStationDetails" />
             <End Role="tblTrainDetails" EntitySet="tblTrainDetails" />
@@ -196,7 +223,7 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -262,14 +289,17 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
           <EntitySet Name="tblUserStations" EntityType="RailwaytrackingModel.tblUserStation" />
           <EntitySet Name="StationTrainDetails" EntityType="RailwaytrackingModel.StationTrainDetail" />
           <EntitySet Name="TemptblStationTrainDetails" EntityType="RailwaytrackingModel.TemptblStationTrainDetail" />
+          <EntitySet Name="TblRatings" EntityType="RailwaytrackingModel.TblRating" />
+          <EntitySet Name="tblNotifications" EntityType="RailwaytrackingModel.tblNotification" />
+          <EntitySet Name="tblEmailNotifications" EntityType="RailwaytrackingModel.tblEmailNotification" />
         </EntityContainer>
         <EntityType Name="tblUserStation">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="StationCode" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="StationCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="StationTrainDetail">
           <Key>
@@ -297,6 +327,37 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
           <Property Name="Status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="StationName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TblRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StationCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Maintance" Type="Int32" Nullable="false" />
+          <Property Name="Security" Type="Int32" Nullable="false" />
+          <Property Name="Food" Type="Int32" Nullable="false" />
+          <Property Name="Staff" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TrainId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="tblEmailNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailTo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -357,6 +418,7 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
           <EntitySetMapping Name="tblUserStations">
             <EntityTypeMapping TypeName="RailwaytrackingModel.tblUserStation">
               <MappingFragment StoreEntitySet="tblUserStation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StationCode" ColumnName="StationCode" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
@@ -388,6 +450,40 @@ warning 6002: The table/view 'Railwaytracking.dbo.tblUserStation' does not have 
                 <ScalarProperty Name="SchduleDate" ColumnName="SchduleDate" />
                 <ScalarProperty Name="StationCode" ColumnName="StationCode" />
                 <ScalarProperty Name="TrainId" ColumnName="TrainId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblRatings">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.TblRating">
+              <MappingFragment StoreEntitySet="TblRating">
+                <ScalarProperty Name="Staff" ColumnName="Staff" />
+                <ScalarProperty Name="Food" ColumnName="Food" />
+                <ScalarProperty Name="Security" ColumnName="Security" />
+                <ScalarProperty Name="Maintance" ColumnName="Maintance" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblNotifications">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblNotification">
+              <MappingFragment StoreEntitySet="tblNotifications">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TrainId" ColumnName="TrainId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmailNotifications">
+            <EntityTypeMapping TypeName="RailwaytrackingModel.tblEmailNotification">
+              <MappingFragment StoreEntitySet="tblEmailNotification">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="EmailTo" ColumnName="EmailTo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

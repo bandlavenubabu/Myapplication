@@ -13,6 +13,19 @@ namespace Railwaytrackingandtimings.Repositery
             this.db = new RailwaytrackingEntitieslatest();
         }
 
+        public int AddNewuser(tblUser user, tblUserStation tsu)
+        {
+            db.tblUsers.Add(user);
+            db.tblUserStations.Add(tsu);
+            return db.SaveChanges();
+        }
+
+        public int Addrating(TblRating rating)
+        {
+            db.TblRatings.Add(rating);
+            return db.SaveChanges();
+        }
+
         public int ADDstationtraindetails(TemptblStationTrainDetail tstd)
         {
             db.TemptblStationTrainDetails.Add(tstd);

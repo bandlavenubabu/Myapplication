@@ -12,14 +12,23 @@ namespace Railwaytrackingandtimings
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class tblUser
     {
-        [Display(Name="User Id")]
+        [Display(Name = "User Id")]
+        [Required(ErrorMessage = "Enter UserId")]
         public string UserId { get; set; }
         [Display(Name = "Password")]
+        [Required(ErrorMessage = "Enter Password")]
         public string Password { get; set; }
+        [NotMapped] // Does not effect with your database
+        [Compare("Password")]
+        [Required(ErrorMessage = "Enter Confirm Password")]
+        public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage = "Enter First Name")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Enter Last Name")]
         public string LastName { get; set; }
         public string Status { get; set; }
         public System.DateTime CreatedDate { get; set; }

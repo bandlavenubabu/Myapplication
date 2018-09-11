@@ -11,19 +11,13 @@ namespace Railwaytrackingandtimings
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class tblTrainDetail
     {
-        [Display(Name="Train No")]
         public int TrainId { get; set; }
-        [Display(Name = "Train Name")]
         public string TrainName { get; set; }
-        [Display(Name = "Train Type")]
         public string TrainType { get; set; }
-        [Display(Name = "From Stationcode")]
         public string FromStationcode { get; set; }
-        [Display(Name = "To Stationcode")]
         public string ToStationCode { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }

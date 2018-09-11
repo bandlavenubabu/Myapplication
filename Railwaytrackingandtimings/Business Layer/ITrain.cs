@@ -9,5 +9,7 @@ namespace Railwaytrackingandtimings.Business_Layer
    public interface ITrain
     {
         bool AddTrainStaSchedule(int delay, int Trainid);
+        string UpcomingStations(int TrainID);
+        
     }
 }

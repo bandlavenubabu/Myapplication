@@ -12,17 +12,17 @@
         <table>
             <tr>
                 <td class="col-xs-4"></td>
-                <td>
+                <td style="padding-right:10px">
                     <span>Select Station: </span>
                 </td>
                 <td>
-                   @Html.DropDownList("ddlstation", new SelectList(ViewBag.stations, "StationCode", "StationName"), htmlAttributes: new { @class = "form-control" })
+                   @Html.DropDownList("ddlstation", new SelectList(ViewBag.stations, "StationCode", "StationName"), "-- Select--", htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td style="padding-right:10px">
+                    <input type="submit" id="btntrainsearch" value="Search" class="btn btn-default" />
                 </td>
                 <td>
-                    <input type="submit" value="Search" class="btn btn-default" />
-                </td>
-                <td>
-                    @Html.ActionLink("Search BY Train No", "Index", "Home")
+                    @Html.ActionLink(" Search by Train No", "Index", "Home", new { @class = "fa fa-search" })
 
                 </td>
             </tr>
@@ -41,30 +41,50 @@
     <div class="col-xs-12 col-sm-1">
 
     </div>
+@if (Model != null)
+{
     <div class="col-xs-12 col-sm-10" style="box-shadow: 0px 0px 5px 2px; background-color: azure;">
         <span class="text-danger">@ViewBag.Error</span>
 
-        @if (Model != null)
-        {
+       
 
             @Html.Grid(Model).Columns(columns =>
-   {
-       columns.Add(c => c.TrainId).Titled("Train No").Filterable(false);
-       columns.Add(c => c.StationName).Titled("Station Name").Filterable(false);
-       columns.Add(c => c.ArrivalTime).Titled("Arrival Time").Filterable(false);
-       columns.Add(c => c.DepatureTime).Titled("Depature Time").Filterable(false);
-       columns.Add(c => c.StationCode).Titled("Station Code").Filterable(false);
-       columns.Add()
-       .Encoded(false)
-       .Sanitized(false)
-       .SetWidth(30)
-       .RenderValueAs(o => Html.ActionLink("Track", "Index", new { id = o.TrainId }));
+       {
+           columns.Add(c => c.TrainId).Titled("Train No").Filterable(false);
+           columns.Add(c => c.StationName).Titled("Station Name").Filterable(false);
+           columns.Add(c => c.ArrivalTime).Titled("Arrival Time").Filterable(false);
+           columns.Add(c => c.DepatureTime).Titled("Depature Time").Filterable(false);
+           columns.Add(c => c.StationCode).Titled("Station Code").Filterable(false);
+           columns.Add()
+           .Encoded(false)
+           .Sanitized(false)
+           .SetWidth(30)
+           .RenderValueAs(o => Html.ActionLink("Track", "Index", new { id = o.TrainId }));
 
-   })
-        }
+       })
+        
     </div>
+}
     <div class="col-xs-12 col-sm-1">
 
     </div>
 
 </div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            
+            $('#btntrainsearch').click(function () {
+                if ($("#ddlstation").val() == '') {
+                    alert("Please Select the Station");
+                    return false;
+                }
+               
+                return true;
+            });
+        });
+
+    </script>
+}

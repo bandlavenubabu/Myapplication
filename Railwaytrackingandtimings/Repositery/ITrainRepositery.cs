@@ -19,6 +19,8 @@ namespace Railwaytrackingandtimings.Repositery
         List<StationTrainDetail> GettrainstationlistbyStation(string StationCode);
         int Updatestationtraindetails(StationTrainDetail std);
         int DeleteTempTrainStation(int Trainid);
+        int AddNewuser(tblUser user, tblUserStation tsu);
+        int Addrating(TblRating  rating);
 
     }
 }

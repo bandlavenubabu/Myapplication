@@ -10,6 +10,12 @@ namespace Railwaytrackingandtimings.Repositery
     {
         tblUser SelectUserByID(string id,string Password);
         tblUserStation SelectUserStation(string userid);
+        int Updateuserpassword(tblUser user, string newpassword);
+
+        int Adduser(tblUser user);
+        tblUser Checkuser(string id);
+        int AddNotification(tblNotification notification);
+        int AddEmailNotification(tblEmailNotification notification);
 
     }
 }

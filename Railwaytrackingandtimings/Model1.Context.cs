@@ -32,5 +32,8 @@ namespace Railwaytrackingandtimings
         public virtual DbSet<tblUserStation> tblUserStations { get; set; }
         public virtual DbSet<StationTrainDetail> StationTrainDetails { get; set; }
         public virtual DbSet<TemptblStationTrainDetail> TemptblStationTrainDetails { get; set; }
+        public virtual DbSet<TblRating> TblRatings { get; set; }
+        public virtual DbSet<tblNotification> tblNotifications { get; set; }
+        public virtual DbSet<tblEmailNotification> tblEmailNotifications { get; set; }
     }
 }

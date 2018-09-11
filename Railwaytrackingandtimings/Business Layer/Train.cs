@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Railwaytrackingandtimings.Repositery;
+using System.Net;
+using System.IO;
+using System.Web.Script.Serialization;
+
+using System.Text;
 
 namespace Railwaytrackingandtimings.Business_Layer
 {
@@ -40,5 +45,26 @@ namespace Railwaytrackingandtimings.Business_Layer
 
 
         }
+
+        public string UpcomingStations(int TrainID)
+        {
+            List<StationTrainDetail> std;
+            std = repositery.Gettrainstationlist(TrainID);
+            //var schedules = new List<Schedule>()
+            //{
+            //    new  Schedule() { ScheduleTime = new TimeSpan(6,00,00)},
+            //    new  Schedule() { ScheduleTime = new TimeSpan(7,00,00)},
+            //    new  Schedule() { ScheduleTime = new TimeSpan(8,00,00)},
+            //};
+
+            var currentTime = DateTime.Now.TimeOfDay;
+            string stationname= std
+                .OrderBy(x => Math.Abs(currentTime.Ticks - x.ArrivalTime.Ticks))
+                .FirstOrDefault().StationName;
+            return stationname;
+        }
+
+       
     }
+    
 }

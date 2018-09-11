@@ -5,19 +5,20 @@
     Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
 }
 
-<h2>NewTrain</h2>
+
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-      
+        <br/>
+        <h4 style="color:green;">NewTrain</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
         <div class="form-group">
-            @Html.LabelFor(model => model.TrainId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Train No", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TrainId, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TrainId, "", new { @class = "text-danger" })
@@ -25,7 +26,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TrainName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Train Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TrainName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TrainName, "", new { @class = "text-danger" })
@@ -33,7 +34,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TrainType, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Train Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.TrainType, new { @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.TrainType, "", new { @class = "text-danger" })
@@ -41,17 +42,17 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FromStationcode, "FromStationcode", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("From", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.FromStationcode, new SelectList(ViewBag.stations, "StationCode", "StationName"), htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.FromStationcode, new SelectList(ViewBag.stations, "StationCode", "StationName"),"--Select--", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.FromStationcode, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ToStationCode, "ToStationCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("To", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ToStationCode, new SelectList(ViewBag.stations, "StationCode", "StationName"), htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.ToStationCode, new SelectList(ViewBag.stations, "StationCode", "StationName"), "--Select--", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ToStationCode, "", new { @class = "text-danger" })
             </div>
         </div>

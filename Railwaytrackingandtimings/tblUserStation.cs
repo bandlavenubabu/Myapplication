@@ -16,5 +16,6 @@ namespace Railwaytrackingandtimings
     {
         public string UserId { get; set; }
         public string StationCode { get; set; }
+        public int Id { get; set; }
     }
 }

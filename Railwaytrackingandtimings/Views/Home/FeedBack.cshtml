@@ -1,0 +1,215 @@
+﻿@model Railwaytrackingandtimings.TblRating
+@{
+    ViewBag.Title = "FeedBack";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .rating {
+        height: 20px;
+        padding: 0px;
+        margin: 0px;
+    }
+
+        .rating li {
+            list-style: none;
+            float: left;
+            width: 20px;
+            height: 20px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+            .rating li a {
+                display: block;
+                width: 20px;
+                height: 20px;
+                padding: 0px;
+                margin: 0px;
+                overflow: hidden;
+                text-indent: -100px;
+                background-image: url('../../Contents/rating.png');
+                background-repeat: no-repeat;
+                text-decoration: none;
+            }
+
+                .rating li a:hover {
+                    background-color: transparent;
+                    text-decoration: none;
+                }
+
+            .rating li .hover {
+                background-position: 0px -20px;
+            }
+
+            .rating li .full {
+                background-position: 0px -40px;
+            }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <br />
+        <h4>Feed Back Form</h4>
+        <hr />
+        <div class="form-group">
+            @Html.Label("Select Station", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.StationCode, new SelectList(ViewBag.stations, "StationCode", "StationName"),"-- Select--", htmlAttributes: new { @class = "form-control",id= "ddlstation" })
+            </div>
+        </div>
+     
+        <div class="form-group">
+            @Html.Label("Maintances", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Maintance,"txtmaintence", new { htmlAttributes = new { @class = "ratingEventm rating10", Type = "text" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Security", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Security,"txtsecurity", new { htmlAttributes = new { @class = "ratingEventS rating10", Type = "text" } })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Food Facilities", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model=>model.Food, new { htmlAttributes = new { @class = "ratingEventFF rating10", id= "txtfood", Type = "text" } })
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Staff Availability", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Staff ,"txtstaff", new { htmlAttributes = new { @class = "ratingEventst rating10", Type = "text" } })
+
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                
+                <input type="submit" value="Submit FeedBack" id="btnsubmit" class="btn btn-default" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span id="lblStatus" class="alert-danger"></span>
+            <span  style="color:green;">@ViewBag.Status </span>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        {
+            $(function () {
+                $('#btnsubmit').click(function () {                   
+                    if ($("#ddlstation").val() == '') {
+                        $("#lblStatus").text("Please select the station name");
+                        return false;
+                    }
+
+                    if ($("#txtmaintence").val() == '') {
+                        $("#lblStatus").text("Please provide maintence the rating");
+                        return false;
+                    }
+                    if ($("#txtsecurity").val() == '') {
+                        $("#lblStatus").text("Please provide security the rating");
+                        return false;
+                    }
+                    if ($("#txtfood").val() == '') {
+                        $("#lblStatus").text("Please provide food facilities the rating");
+                        return false;
+                    }
+                    if ($("#txtstaff").val() == '') {
+                        $("#lblStatus").text("Please provide staff availability the rating");
+                        return false;
+                    }
+                    return true;
+                });
+
+                $('.rating').rating();
+
+                $('.ratingEventm').rating({ rateEnd: function (v) { $('#txtmaintence').text(v); } });
+                $('.ratingEventS').rating({ rateEnd: function (v) { $('#txtsecurity').text(v); } });
+                $('.ratingEventFF').rating({ rateEnd: function (v) { $('#txtfood').text(v); } });
+                $('.ratingEventst').rating({ rateEnd: function (v) { $('#txtstaff').text(v); } });
+            });
+
+            (function ($) {
+                $.fn.rating = function (options) {
+                    var settings = $.extend(
+                        {
+                            rateEnd: function (value) { }
+                        }, options);
+
+                    function setRating(e, ul) {
+                        var i = parseInt(e.val());
+                        if (!i) { i = 0; }
+
+                        ul.find('a').removeAttr('class');
+                        ul.find('a:lt(' + i + ')').attr('class', 'full');
+                    }
+
+                    this.each(function () {
+                        var e = $(this);
+                        var c = parseInt(e.attr("class").match(/rating\d+/)[0].replace('rating', ''));
+
+                        var ul = $('<ul class="rating"></ul>').insertAfter(e).width(c * 20 + 'px');
+
+                        if (c > 0) {
+                            for (k = 0; k < c; k++) {
+                                ul.append('<li><a href="javascript:void(0);" title="' + (k + 1) + '">' + (k + 1) + '</a></li>')
+                            }
+                        }
+
+                        if (e.prop('readonly')) {
+                            var i = parseInt(e.val());
+
+                            if (!i) { i = 0; }
+
+                            ul.find('a').attr('title', i + ' / ' + c);
+                        }
+                        else {
+                            ul.find('a').each(function (index, link) {
+                                var link = $(link);
+
+                                link.hover(function () {
+                                    ul.find('a').removeAttr('class');
+                                    ul.find('a:lt(' + (index + 1) + ')').attr('class', 'hover');
+
+                                }, function () {
+                                        setRating(e, ul);
+                                    });
+
+                                link.click(function () {
+                                    e.val(index + 1);
+
+                                    setRating(e, ul);
+
+                                    settings.rateEnd(index + 1);
+                                });
+                            });
+                        }
+
+                        setRating(e, ul);
+
+                        e.hide();
+                    });
+
+                    return this;
+                }
+
+            })(jQuery);
+        }
+    </script>
+}
+

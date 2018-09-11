@@ -22,8 +22,9 @@ namespace Railwaytrackingandtimings
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/Gridmvc.css",
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
-            bundles.Add(new StyleBundle("~/Contents/css").Include("~/Content/bootstrap-datetimepicker.min.css"));
+                      "~/Content/site.css", "~/Content/bootstrap-datetimepicker.min.css", "~/Content/bootstrap-datetimepicker3.min.css", "~/Content/font-awesome.min.css"));
+            //bundles.Add(new StyleBundle("~/Contents/css").Include("~/Contents/bootstrap-datetimepicker.min.css",
+            //    "~/Contents/font-awesome.min.css"));
         }
     }
 }
