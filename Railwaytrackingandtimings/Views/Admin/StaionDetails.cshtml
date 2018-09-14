@@ -1,0 +1,85 @@
+﻿@model Railwaytrackingandtimings.Models.StationlistModel
+@using GridMvc.Html
+@{
+    ViewBag.Title = "StaionDetails";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+
+<h2></h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4 style="color:green;">Staion Details</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Staion Code", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tblstation.StationCode, new { htmlAttributes = new { @class = "form-control", id="txtcode" } })
+                @Html.ValidationMessageFor(model => model.tblstation.StationCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Station Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tblstation.StationName, new { htmlAttributes = new { @class = "form-control",  id = "txtStationname" } })
+                @Html.ValidationMessageFor(model => model.tblstation.StationName, "", new { @class = "text-danger" })
+            </div>
+        </div>       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="btnAdd" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="color:green;">@ViewBag.Status </span>
+        </div>
+        <br />
+        <h4 style="color:green">Stations List</h4><hr/>
+        <div class="col-xs-12" style="box-shadow: 0px 0px 5px 2px; background-color: azure;">
+            <div class="col-xs-12 col-sm-1"></div>
+                <div>
+                   
+
+                    @Html.Grid(Model.tblstationslist).Columns(columns =>
+               {
+                   columns.Add(c => c.StationCode).Titled("Station Code").Filterable(false).Sortable(true);
+                   columns.Add(c => c.StationName).Titled("Station Name").Filterable(false).Sortable(true);
+                   columns.Add(c => c.CreatedDate).Titled("CreatedDate").Filterable(false);
+                   columns.Add(c => c.LastUpdated).Titled("LastUpdated").Filterable(false);
+
+
+               }).WithPaging(10).Sortable(true)
+                </div>
+                <br />
+             
+            
+        </div>
+
+    </div>
+}
+@section scripts{
+<script type="text/javascript">
+         
+          $('#btnAdd').click(function () {
+              if ($("#txtcode").val() == '') {
+                  alert("Station code should not be blank");
+                  return false;
+              }
+              if ($("#txtStationname").val() == '') {
+                  alert("Station Name should not be blank");
+                  return false;
+              }             
+
+              return true;
+          });
+          //$('.input-group.date').datepicker({  minDate: new Date() });
+</script>
+
+        }
+

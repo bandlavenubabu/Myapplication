@@ -114,5 +114,23 @@ namespace Railwaytrackingandtimings.Business_Layer
             notification.CreatedDate = DateTime.Now;
             return repo.AddEmailNotification(notification);
         }
+
+        public void SendNotifications(IEnumerable<usp_NotificationsUpdate_Result>  notification)
+        {
+            if (notification.Count() > 0)
+            {
+                foreach (var s in notification)
+                {
+                    TimeSpan arr = s.ArrivalTime + TimeSpan.FromMinutes(Convert.ToInt32(s.Delay));
+                    if (arr > DateTime.Now.TimeOfDay)
+                    {
+                        Sendemail(s.EmailId, s.TrainID.ToString(), s.Delay.ToString(), arr.ToString(), s.StationName);
+                    }
+                    else {
+                        int i =repo.Updatenotifications(s.Id);
+                    }
+                }
+            }
+        }
     }
 }

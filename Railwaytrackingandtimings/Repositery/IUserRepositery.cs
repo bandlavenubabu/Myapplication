@@ -16,6 +16,7 @@ namespace Railwaytrackingandtimings.Repositery
         tblUser Checkuser(string id);
         int AddNotification(tblNotification notification);
         int AddEmailNotification(tblEmailNotification notification);
+        int Updatenotifications(int id);
 
     }
 }

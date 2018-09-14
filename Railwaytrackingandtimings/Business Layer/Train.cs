@@ -14,6 +14,15 @@ namespace Railwaytrackingandtimings.Business_Layer
     public class Train : ITrain
     {
         ITrainRepositery repositery = new TrainRepositery();
+
+        public int AddStation(tblStationDetail station)
+        {
+            station.CreatedDate = DateTime.Now;
+            station.LastUpdated = DateTime.Now;
+            station.Status = "Y";
+            return repositery.AddStation(station);
+        }
+
         public bool AddTrainStaSchedule(int delay, int Trainid)
         {
             List<TemptblStationTrainDetail> tempdetails = new List<TemptblStationTrainDetail>();

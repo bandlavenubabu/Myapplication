@@ -16,6 +16,7 @@ namespace Railwaytrackingandtimings
 
     public partial class tblUser
     {
+
         [Display(Name = "User Id")]
         [Required(ErrorMessage = "Enter UserId")]
         public string UserId { get; set; }

@@ -21,6 +21,7 @@ namespace Railwaytrackingandtimings.Controllers
             string userid= FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
             string stationcode = repositery.SelectUserStation(userid).StationCode;            
             var std = trepositery.GettrainstationlistbyStation(stationcode);
+            if(std.Count !=0)
             ViewBag.stationname = trepositery.GettrainstationlistbyStation(stationcode).FirstOrDefault().StationName;
             return View(std);
         }
@@ -41,6 +42,12 @@ namespace Railwaytrackingandtimings.Controllers
         }
         public ActionResult ChangePassword()
         {
+            return View();
+        }
+        public ActionResult Feedback()
+        {
+            string userid = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+            ViewBag.stationcode = repositery.SelectUserStation(userid).StationCode;
             return View();
         }
         [HttpPost]

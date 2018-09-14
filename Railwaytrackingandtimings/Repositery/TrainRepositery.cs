@@ -31,7 +31,20 @@ namespace Railwaytrackingandtimings.Repositery
             db.TemptblStationTrainDetails.Add(tstd);
             return db.SaveChanges();
         }
-
+        public int AddStation(tblStationDetail station)
+        {            
+            var result = db.tblStationDetails.SingleOrDefault(b => b.StationCode == station.StationCode);
+            if (result != null)
+            {
+                result.StationName = station.StationName;
+                result.LastUpdated = DateTime.Now;
+                return db.SaveChanges();
+            }
+            else {
+                db.tblStationDetails.Add(station);
+                return db.SaveChanges();
+            }
+        }
         public int AddTrain(tblTrainDetail ttd)
         {
             db.tblTrainDetails.Add(ttd);
@@ -48,6 +61,16 @@ namespace Railwaytrackingandtimings.Repositery
         {
             db.TemptblStationTrainDetails.RemoveRange(db.TemptblStationTrainDetails.Where(x => x.TrainId == Trainid));
             return db.SaveChanges();
+        }
+
+        public IEnumerable<Usp_rating_Result> GetFeedback(string StationCode)
+        {
+            return db.Usp_rating(StationCode);
+        }
+
+        public IEnumerable<usp_NotificationsUpdate_Result> Getnotification()
+        {
+            return db.usp_NotificationsUpdate().ToList();
         }
 
         public tblStationDetail GetStationName(string Stationcode)
@@ -79,6 +102,8 @@ namespace Railwaytrackingandtimings.Repositery
         {
             return db.StationTrainDetails.Where(a => a.StationCode == StationCode && a.Status == "Y" && a.SchduleDate >= DateTime.Today).ToList();
         }
+
+        
 
         public int Updatestationtraindetails(StationTrainDetail std)
         {

@@ -12,6 +12,8 @@ namespace Railwaytrackingandtimings
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class RailwaytrackingEntitieslatest : DbContext
     {
@@ -35,5 +37,24 @@ namespace Railwaytrackingandtimings
         public virtual DbSet<TblRating> TblRatings { get; set; }
         public virtual DbSet<tblNotification> tblNotifications { get; set; }
         public virtual DbSet<tblEmailNotification> tblEmailNotifications { get; set; }
+    
+        public virtual ObjectResult<Usp_rating_Result> Usp_rating(string stationCode)
+        {
+            var stationCodeParameter = stationCode != null ?
+                new ObjectParameter("StationCode", stationCode) :
+                new ObjectParameter("StationCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_rating_Result>("Usp_rating", stationCodeParameter);
+        }
+    
+        public virtual ObjectResult<usp_Notifications_Result> usp_Notifications()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_Notifications_Result>("usp_Notifications");
+        }
+    
+        public virtual ObjectResult<usp_NotificationsUpdate_Result> usp_NotificationsUpdate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_NotificationsUpdate_Result>("usp_NotificationsUpdate");
+        }
     }
 }

@@ -13,24 +13,31 @@ namespace Railwaytrackingandtimings.Controllers
     {
         ITrainRepositery repositery = new TrainRepositery();
         ITrain Btrain = new Train();
+        IUsersManagment Buser=new UsersManagement();
 
         // GET api/values
-        public HttpResponseMessage GetTrainsList()
-        {
-          var traindetails = repositery.GetTrainDetails();
-            if (traindetails == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, traindetails);
-        }
+        //public HttpResponseMessage GetTrainsList()
+        //{
+        //  var traindetails = repositery.GetTrainDetails();
+        //    if (traindetails == null)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound);
+        //    }
+        //    return Request.CreateResponse(HttpStatusCode.OK, traindetails);
+        //}
 
         // GET api/values/5
-        public string Get(int id)
+        public HttpResponseMessage GetFeedback(string Stationcode)
         {
-            return "value";
+            var feedback = repositery.GetFeedback(Stationcode);
+            return Request.CreateResponse(HttpStatusCode.OK, feedback);
         }
-
+        public HttpResponseMessage GetNotifications()
+        {
+            var feedback = repositery.Getnotification();
+            Buser.SendNotifications(feedback);
+            return Request.CreateResponse(HttpStatusCode.OK, feedback);
+        }
         // POST api/values
         public void Post([FromBody]string value)
         {

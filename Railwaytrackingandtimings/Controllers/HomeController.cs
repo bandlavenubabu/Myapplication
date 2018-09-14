@@ -215,12 +215,37 @@ namespace Railwaytrackingandtimings.Controllers
 
         public ActionResult FeedBack()
         {
+            Userclass user = new Userclass();
+            string rootpath = System.Configuration.ConfigurationManager.AppSettings["rooturl"].ToString();
+            if (Request.QueryString["code"] != null)
+            {
+
+                string redirection_url = rootpath + "Home/FeedBack";
+                user = ium.GetToken(Request.QueryString["code"].ToString(), redirection_url);
+                if (!ium.Checkuser(user.id))
+                {
+                    ium.AddsocalUser(user);
+                }
+                ViewBag.Id = user.id;
+            }
+            else
+            {
+                string clientid = "18165402201-i4hq1sqdt8h4ftph4kf647l551jqp2tu.apps.googleusercontent.com";
+                //your client secret  
+                string clientsecret = "Q_yDKwN32V0lgA9mW6edEvyA";
+                //your redirection url  
+                string redirection_url = rootpath + "Home/FeedBack";
+                string url = "https://accounts.google.com/o/oauth2/v2/auth?scope=profile&include_granted_scopes=true&redirect_uri=" + redirection_url + "&response_type=code&client_id=" + clientid + "";
+                Response.Redirect(url);
+            }            
             ViewBag.stations = trepositery.getStations();
             return View();
         }
         [HttpPost]
         public ActionResult FeedBack(TblRating  tbl)
         {
+            string userid = Request.Form["hdnuserid"].ToString();
+            tbl.UserId = userid;            
             int std = trepositery.Addrating(tbl);
             if (std > 0)
                 ViewBag.Status = "FeedBack Submited Sucessfully";

@@ -10,9 +10,8 @@
 namespace Railwaytrackingandtimings
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class TblRating
+    public partial class Usp_rating_Result
     {
         public int Id { get; set; }
         public string StationCode { get; set; }
@@ -20,7 +19,9 @@ namespace Railwaytrackingandtimings
         public int Security { get; set; }
         public int Food { get; set; }
         public string Staff { get; set; }
+        public Nullable<decimal> Rating { get; set; }
         public string Comments { get; set; }
         public string UserId { get; set; }
+        public string Username { get; set; }
     }
 }

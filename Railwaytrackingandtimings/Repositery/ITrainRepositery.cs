@@ -22,5 +22,10 @@ namespace Railwaytrackingandtimings.Repositery
         int AddNewuser(tblUser user, tblUserStation tsu);
         int Addrating(TblRating  rating);
 
+        IEnumerable<Usp_rating_Result> GetFeedback(string StationCode);
+        IEnumerable<usp_NotificationsUpdate_Result> Getnotification();
+
+        int AddStation(tblStationDetail station);
+
     }
 }

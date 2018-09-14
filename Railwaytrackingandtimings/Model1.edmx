@@ -49,6 +49,8 @@
           <Property Name="Security" Type="int" Nullable="false" />
           <Property Name="Food" Type="int" Nullable="false" />
           <Property Name="Staff" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="200" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -153,6 +155,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="usp_Notifications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_NotificationsUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Usp_rating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StationCode" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="RailwaytrackingModelStoreContainer">
           <EntitySet Name="StationTrainDetails" EntityType="Self.StationTrainDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmailNotification" EntityType="Self.tblEmailNotification" Schema="dbo" store:Type="Tables" />
@@ -292,6 +299,11 @@
           <EntitySet Name="TblRatings" EntityType="RailwaytrackingModel.TblRating" />
           <EntitySet Name="tblNotifications" EntityType="RailwaytrackingModel.tblNotification" />
           <EntitySet Name="tblEmailNotifications" EntityType="RailwaytrackingModel.tblEmailNotification" />
+          <FunctionImport Name="Usp_rating" ReturnType="Collection(RailwaytrackingModel.Usp_rating_Result)">
+          <Parameter Name="StationCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Notifications" ReturnType="Collection(RailwaytrackingModel.usp_Notifications_Result)" />
+          <FunctionImport Name="usp_NotificationsUpdate" ReturnType="Collection(RailwaytrackingModel.usp_NotificationsUpdate_Result)" />
         </EntityContainer>
         <EntityType Name="tblUserStation">
           <Key>
@@ -338,6 +350,8 @@
           <Property Name="Security" Type="Int32" Nullable="false" />
           <Property Name="Food" Type="Int32" Nullable="false" />
           <Property Name="Staff" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblNotification">
           <Key>
@@ -359,6 +373,36 @@
           <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <ComplexType Name="Usp_rating_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="StationCode" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Maintance" Nullable="false" />
+          <Property Type="Int32" Name="Security" Nullable="false" />
+          <Property Type="Int32" Name="Food" Nullable="false" />
+          <Property Type="String" Name="Staff" Nullable="false" MaxLength="10" />
+          <Property Type="Decimal" Name="Rating" Nullable="true" Precision="17" Scale="6" />
+          <Property Type="String" Name="Comments" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="UserId" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="21" />
+        </ComplexType>
+        <ComplexType Name="usp_Notifications_Result">
+          <Property Type="String" Name="EmailId" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="TrainID" Nullable="false" />
+          <Property Type="String" Name="StationCode" Nullable="false" MaxLength="50" />
+          <Property Type="Time" Name="ArrivalTime" Nullable="false" />
+          <Property Type="DateTime" Name="Schduledate" Nullable="false" />
+          <Property Type="Int32" Name="Delay" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_NotificationsUpdate_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="EmailId" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="TrainID" Nullable="false" />
+          <Property Type="String" Name="StationCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="StationName" Nullable="false" MaxLength="50" />
+          <Property Type="Time" Name="ArrivalTime" Nullable="false" />
+          <Property Type="DateTime" Name="Schduledate" Nullable="false" />
+          <Property Type="Int32" Name="Delay" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -456,6 +500,8 @@
           <EntitySetMapping Name="TblRatings">
             <EntityTypeMapping TypeName="RailwaytrackingModel.TblRating">
               <MappingFragment StoreEntitySet="TblRating">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="Staff" ColumnName="Staff" />
                 <ScalarProperty Name="Food" ColumnName="Food" />
                 <ScalarProperty Name="Security" ColumnName="Security" />
@@ -487,6 +533,48 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Usp_rating" FunctionName="RailwaytrackingModel.Store.Usp_rating">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RailwaytrackingModel.Usp_rating_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="Maintance" ColumnName="Maintance" />
+                <ScalarProperty Name="Security" ColumnName="Security" />
+                <ScalarProperty Name="Food" ColumnName="Food" />
+                <ScalarProperty Name="Staff" ColumnName="Staff" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Notifications" FunctionName="RailwaytrackingModel.Store.usp_Notifications">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RailwaytrackingModel.usp_Notifications_Result">
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="TrainID" ColumnName="TrainID" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="Schduledate" ColumnName="Schduledate" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_NotificationsUpdate" FunctionName="RailwaytrackingModel.Store.usp_NotificationsUpdate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RailwaytrackingModel.usp_NotificationsUpdate_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="TrainID" ColumnName="TrainID" />
+                <ScalarProperty Name="StationCode" ColumnName="StationCode" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="Schduledate" ColumnName="Schduledate" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -59,5 +59,15 @@ namespace Railwaytrackingandtimings.Repositery
             }
             return db.SaveChanges();
         }
+        public int Updatenotifications(int id)
+        {
+            var delayset = db.tblNotifications.SingleOrDefault(b => b.Id == id);
+            if (delayset != null)
+            {
+                delayset.Status = "N";
+
+            }
+            return db.SaveChanges();
+        }
     }
 }

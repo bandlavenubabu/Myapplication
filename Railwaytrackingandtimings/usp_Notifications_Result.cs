@@ -10,17 +10,14 @@
 namespace Railwaytrackingandtimings
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class TblRating
+    public partial class usp_Notifications_Result
     {
-        public int Id { get; set; }
+        public string EmailId { get; set; }
+        public int TrainID { get; set; }
         public string StationCode { get; set; }
-        public int Maintance { get; set; }
-        public int Security { get; set; }
-        public int Food { get; set; }
-        public string Staff { get; set; }
-        public string Comments { get; set; }
-        public string UserId { get; set; }
+        public System.TimeSpan ArrivalTime { get; set; }
+        public System.DateTime Schduledate { get; set; }
+        public Nullable<int> Delay { get; set; }
     }
 }

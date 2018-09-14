@@ -15,5 +15,6 @@ namespace Railwaytrackingandtimings.Business_Layer
         bool Checkuser(string id);
         int AddNotification( string userid,int trainid,string emailid);
         int Sendemail(string email, string trainno, string delay, string arrival, string nextstationn);
+        void SendNotifications(IEnumerable<usp_NotificationsUpdate_Result> notification);
     }
 }

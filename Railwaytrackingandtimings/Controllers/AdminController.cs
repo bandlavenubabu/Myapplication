@@ -157,5 +157,28 @@ namespace Railwaytrackingandtimings.Controllers
                   
             return View();
         }
+        public ActionResult StaionDetails()
+        {            
+            StationlistModel  tsdm = new StationlistModel();
+            tsdm.tblstationslist= repositery.getStations().ToList();            
+            return View(tsdm);
+        }
+        [HttpPost]
+        public ActionResult StaionDetails(StationlistModel tsdm)
+        {
+            tblStationDetail station = tsdm.tblstation;
+            int i = Btrain.AddStation(station);
+            if (i > 0)
+                ViewBag.status = "Station Details Added sussfully";
+            else
+                ViewBag.status = "Failed to Add station.";
+            tsdm.tblstationslist = repositery.getStations().ToList();
+            return View(tsdm);
+        }
+        public ActionResult Feedback()
+        {
+            ViewBag.stations = repositery.getStations();
+            return View();
+        }
     }
 }

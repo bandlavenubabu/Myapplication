@@ -10,6 +10,8 @@ namespace Railwaytrackingandtimings.Business_Layer
     {
         bool AddTrainStaSchedule(int delay, int Trainid);
         string UpcomingStations(int TrainID);
-        
+        int AddStation(tblStationDetail station);
+
+
     }
 }

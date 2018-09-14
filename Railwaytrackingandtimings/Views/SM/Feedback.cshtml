@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Views/Shared/_LayoutPageSM.cshtml";
+}
+
+<div class="form-horizontal" style="background: #fdfdfd">
+    <div id="feedbacklist" class=""></div>
+
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        var APISiteUrl = '@(System.Configuration.ConfigurationManager.AppSettings["Apiurl"].ToString())'
+                $.ajax({
+                    url: APISiteUrl + 'Values/GetFeedback',
+                    type: 'Get',
+                    dataType: 'json',
+                    data: { 'Stationcode': '@ViewBag.stationcode' },
+                    async: false,
+                    success: function (data) {
+                        $("#feedbacklist").html("");
+                        $("#feedbacklist").append('<div><h3  class="fa fa-comment fa-lg" > Users Comments</h3><hr/></div>');
+                        if (data == null)
+                            $("#feedbacklist").append('<div><span> no comments avalilable</h3><hr/></span>');
+                        $.each(data, function (key, val) {
+                            //$("#feedbacklist").append('<tr><td><span class="fa fa-user-o" style="color:green;"><b> Name:</b>' + val.Username + '</span><br/></td><td></td></tr><tr><td class="fa fa-comments"><b> ' + val.Comments + '</b><br/></td></tr><tr><td><span class="fa fa-star-half-o"  style="color:#bb2b45"><b>Rating:</b>' + val.Rating + '</span><br/><hr/></td></tr>');
+                            $("#feedbacklist").append('<div><span class="fa fa-user-o" style="color:green;"><b> Name:</b>' + val.Username + '</span><br/></div><div class="fa fa-comments"><b> ' + val.Comments + '</b><br/></div><div><span class="fa fa-star-half-o"  style="color:#bb2b45"><b>Rating:</b>' + val.Rating + '</span><br/><hr/></div>');
+                        })
+                        }, error: function (err) {
+                        alert(err);
+                    }
+                });
+    </script>
+  }

@@ -50,10 +50,11 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
     <div class="form-horizontal">
         <br />
-        <h4>Feed Back Form</h4>
+        <h4>FeedBack Form</h4>
+        @Html.Hidden("hdnuserid", (object)ViewBag.Id)
         <hr />
         <div class="form-group">
             @Html.Label("Select Station", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -92,7 +93,14 @@
 
             </div>
         </div>
+        <div class="form-group">
+            @Html.Label("Comments", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Comments, new {@class = "form-control", Type = "text",id="txtcomments", style= "margin: 0px;width: 276px;height: 71px; " } )
 
+
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -104,14 +112,19 @@
             <span id="lblStatus" class="alert-danger"></span>
             <span  style="color:green;">@ViewBag.Status </span>
         </div>
+       
+    </div>
+    <div class="form-horizontal" style="background: #fdfdfd">
+        <div id="feedbacklist" class=""></div>
+
     </div>
 }
 @section Scripts
 {
     <script type="text/javascript">
-        {
+
             $(function () {
-                $('#btnsubmit').click(function () {                   
+                $('#btnsubmit').click(function () {
                     if ($("#ddlstation").val() == '') {
                         $("#lblStatus").text("Please select the station name");
                         return false;
@@ -142,7 +155,8 @@
                 $('.ratingEventS').rating({ rateEnd: function (v) { $('#txtsecurity').text(v); } });
                 $('.ratingEventFF').rating({ rateEnd: function (v) { $('#txtfood').text(v); } });
                 $('.ratingEventst').rating({ rateEnd: function (v) { $('#txtstaff').text(v); } });
-            });
+
+                });
 
             (function ($) {
                 $.fn.rating = function (options) {
@@ -208,8 +222,31 @@
                     return this;
                 }
 
-            })(jQuery);
-        }
+        })(jQuery);
+
+
+            $('#ddlstation').on("change", function () {
+                var stationcode = $('#ddlstation').val();
+                var APISiteUrl = '@(System.Configuration.ConfigurationManager.AppSettings["Apiurl"].ToString())'
+                $.ajax({
+                    url: APISiteUrl + 'Values/GetFeedback',
+                    type: 'Get',
+                    dataType: 'json',
+                    data: { 'Stationcode': stationcode },
+                    async: false,
+                    success: function (data) {
+                        $("#feedbacklist").html("");
+                        $("#feedbacklist").append('<div><h3  class="fa fa-comment fa-lg" > Users Comments</h3><hr/></div>');
+                        $.each(data, function (key, val) {
+                            //$("#feedbacklist").append('<tr><td><span class="fa fa-user-o" style="color:green;"><b> Name:</b>' + val.Username + '</span><br/></td><td></td></tr><tr><td class="fa fa-comments"><b> ' + val.Comments + '</b><br/></td></tr><tr><td><span class="fa fa-star-half-o"  style="color:#bb2b45"><b>Rating:</b>' + val.Rating + '</span><br/><hr/></td></tr>');
+                            $("#feedbacklist").append('<div><span class="fa fa-user-o" style="color:green;"><b> Name:</b>' + val.Username + '</span><br/></div><div class="fa fa-comments"><b> ' + val.Comments + '</b><br/></div><div><span class="fa fa-star-half-o"  style="color:#bb2b45"><b>Rating:</b>' + val.Rating + '</span><br/><hr/></div>');
+                        })
+                        }, error: function (err) {
+                        alert(err);
+                    }
+                });
+            })
+
     </script>
 }
 
